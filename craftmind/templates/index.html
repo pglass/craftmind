@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% from 'macros.j2' import section %}
+
+<html>
+{% include 'head.html' %}
+<body>
+<div class="container">
+    <p>
+    {% call(items) section("Users") %}
+        <ul class="list-unstyled">
+        {% for user in craft.users %}
+            <li>{{ user.name }} <a href="/users/{{ user.name }}"><b>[stats]</b></a></li>
+        {% endfor %}
+        </ul>
+    {% endcall %}
+
+    {% call section("Admins") %}
+        <ul class="list-unstyled">
+        {% for op in craft.ops %}
+            <li><b>{{ op.name }}</b> [Level {{ op.level }}]</li>
+        {% endfor %}
+        </ul>
+    {% endcall %}
+
+    {% call(props) section("Server Properties") %}
+        <table class="table table-condensed table-responsive">
+           <tbody>
+                {% for key, val in craft.server_properties %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>{{ val }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endcall %}
+
+
+</div>
+</body>
+</html>
