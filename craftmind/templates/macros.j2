@@ -8,3 +8,20 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro make_table(headers=[]) -%}
+    <table class="table table-condensed table-responsive">
+        {% if headers %}
+        <thead>
+            <tr>
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        {% endif %}
+        <tbody>
+            {{ caller() }}
+        </tbody>
+    </table>
+{%- endmacro %}

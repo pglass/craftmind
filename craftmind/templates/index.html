@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% from 'macros.j2' import section %}
+{% from 'macros.j2' import section, make_table %}
 
 <html>
 {% include 'head.html' %}
@@ -22,19 +22,43 @@
         </ul>
     {% endcall %}
 
-    {% call(props) section("Server Properties") %}
-        <table class="table table-condensed table-responsive">
-           <tbody>
-                {% for key, val in craft.server_properties %}
+    {% call section("Server Properties") %}
+        {% call make_table() %}
+            {% for key, val in craft.server_properties %}
+            <tr>
+                <td><b>{{ key }}</b></td>
+                <td>{{ val }}</td>
+            </tr>
+            {% endfor %}
+        {% endcall %}
+    {% endcall %}
+
+    {% call section("Level Data") %}
+        {% call make_table() %}
+            {% for key, val in craft.level_data.Data.items() | sort %}
+            {% if key|string() == 'GameRules' %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>
+                    {% call make_table() %}
+                        {% for k, v in val.items() | sort %}
+                            <tr>
+                                <td><b>{{ k }}</b></td>
+                                <td>{{ v }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endcall %}
+                    </td>
+                </tr>
+            {% else %}
                 <tr>
                     <td><b>{{ key }}</b></td>
                     <td>{{ val }}</td>
                 </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            {% endif %}
+            {% endfor %}
+        {% endcall %}
     {% endcall %}
-
 
 </div>
 </body>

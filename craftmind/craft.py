@@ -2,6 +2,8 @@ import json
 import logging
 import os
 
+from nbt.nbt import NBTFile
+
 LOG = logging.getLogger(__name__)
 
 
@@ -24,6 +26,10 @@ class Craft(object):
             LOG.exception(e)
             return None
 
+    @property
+    def level_data(self):
+        return self._read_nbt('world/level.dat') or {}
+
     def user_stats(self, username):
         user = self._find_user_by_name(username)
         if not user:
@@ -31,6 +37,15 @@ class Craft(object):
                       username)
             return {}
         return self._load_stats(user)
+
+    def _read_nbt(self, relpath):
+        try:
+            path = os.path.join(self.directory, relpath)
+            with open(path, 'rb') as f:
+                return NBTFile(fileobj=f)
+        except Exception as e:
+            LOG.exception(e)
+            return None
 
     def _read_json(self, relpath):
         try:
