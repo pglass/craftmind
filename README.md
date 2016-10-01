@@ -15,6 +15,22 @@ Features,
 - [ ] Show player whitelist [`whitelist.json`]
 - [ ] ???
 
+Supported Minecraft versions
+
+- [ ] 1.10
+- [ ] 1.9
+- [x] 1.8
+- [ ] 1.7
+- [ ] 1.6
+- [ ] 1.5
+- [ ] 1.4
+- [ ] 1.3
+- [ ] 1.2
+- [ ] 1.1
+- [ ] 1.0
+
+Other versions than those checked above may work but are not tested.
+
 Quickstart
 ----------
 
@@ -30,6 +46,9 @@ On Linux,
     $ cd craftmind
     $ pip install -r requirements.txt
     $ make start
+
+**NOTE**: Craftmind assumes your Minecraft server data directory is
+`/home/Minecraft`. Changing this directory currently requires editing the code.
 
 This starts a multiprocess HTTP server (gunicorn) suitable for a small number
 of concurrent users. You may open your browser and go to
