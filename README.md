@@ -10,7 +10,7 @@ Features,
 - [x] Show aggregate player statistics (achievements, etc)
 - [ ] Show banned ips
 - [ ] Show player whitelist
-- ???
+- [ ] ???
 
 Quickstart
 ----------
