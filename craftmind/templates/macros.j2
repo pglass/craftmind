@@ -25,3 +25,15 @@
         </tbody>
     </table>
 {%- endmacro %}
+
+{% macro display_biomes(key, data) -%}
+    <td>
+        <ul class="list-unstyled">
+        {% for item in data.progress | sort %}
+            <li>{{ item }}</li>
+        {% endfor %}
+            <li><b>[value: {{ data.value }}]</b></li>
+        </ul>
+    </td>
+    {{ caller() }}
+{%- endmacro %}

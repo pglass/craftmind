@@ -9,6 +9,7 @@ Features,
 - [x] List players [`usercache.json`]
 - [x] List server operators [`ops.json`]
 - [x] Show aggregate player statistics [`world/stats/*.json`]
+- [x] Compare player statistics
 - [x] Display world data [`world/level.dat`]
 - [ ] Show banned ips [`banned-ips.json`]
 - [ ] Show banned players [`banned-players.json`]
@@ -48,7 +49,7 @@ On Linux,
     $ make start
 
 **NOTE**: Craftmind assumes your Minecraft server data directory is
-`/home/Minecraft`. Changing this directory currently requires editing the code.
+`/home/minecraft`. Changing this directory currently requires editing the code.
 
 This starts a multiprocess HTTP server (gunicorn) suitable for a small number
 of concurrent users. You may open your browser and go to

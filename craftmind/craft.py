@@ -30,6 +30,33 @@ class Craft(object):
     def level_data(self):
         return self._read_nbt('world/level.dat') or {}
 
+    def user_comparison(self, *usernames):
+        def add_user_data(result, user_stats, name):
+            """Insert the data into result as follows:
+
+                data looks like {<category>: {<stat>: <val>}}
+                result looks like {<category>: {<stat>: {<name>: <val>}}}
+            """
+            for category, data in user_stats.items():
+                if category not in result:
+                    result[category] = {}
+
+                for stat, val in data.items():
+                    if stat not in result[category]:
+                        result[category][stat] = {}
+
+                    result[category][stat][name] = val
+
+        result = {}
+        for name in usernames:
+            userdata = self.user_stats(name)
+            if not userdata:
+                LOG.error("Failed to compile user comparison data for %s", usernames)
+                return {}
+
+            add_user_data(result, userdata, name)
+        return result
+
     def user_stats(self, username):
         user = self._find_user_by_name(username)
         if not user:

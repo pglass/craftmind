@@ -6,13 +6,32 @@ from craft import Craft
 
 app = Flask(__name__)
 
+MINECRAFT_DATA_DIR = '/home/minecraft'
+
 @app.route('/')
 def root():
-    return render_template('index.html', craft=Craft('/home/minecraft'))
+    return render_template('index.html', craft=Craft(MINECRAFT_DATA_DIR))
 
 @app.route('/users/<username>')
 def user(username):
-    return render_template('user.html', craft=Craft('/home/minecraft'), username=username)
+    return render_template('user.html',
+        craft=Craft(MINECRAFT_DATA_DIR),
+        usernames=[username],
+    )
+
+@app.route('/users/<username>/compare')
+def user_comparison_selection(username):
+    return render_template('user_comparison_selection.html',
+        craft=Craft(MINECRAFT_DATA_DIR),
+        username=username,
+    )
+
+@app.route('/users/<username>/compare/<othername>')
+def user_comparison(username, othername):
+    return render_template('user_comparison.html',
+        craft=Craft(MINECRAFT_DATA_DIR),
+        usernames=[username, othername],
+    )
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)

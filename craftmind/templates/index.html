@@ -6,7 +6,7 @@
 <body>
 <div class="container">
     <p>
-    {% call(items) section("Users") %}
+    {% call section("Users") %}
         <ul class="list-unstyled">
         {% for user in craft.users %}
             <li>{{ user.name }} <a href="/users/{{ user.name }}"><b>[stats]</b></a></li>

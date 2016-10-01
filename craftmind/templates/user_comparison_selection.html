@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% from 'macros.j2' import section %}
+
+<html>
+{% include 'head.html' %}
+<body>
+<div class="container">
+    <p>
+    {% call section("Compare " ~ username ~ " to...") %}
+        <ul class="list-unstyled">
+        {% for user in craft.users %}
+        {% if user.name != username %}
+        <li><a href="/users/{{ username }}/compare/{{ user.name }}"><b>... {{ user.name }}</b></a></li>
+        {% endif %}
+        {% endfor %}
+        </ul>
+    {% endcall %}
+</div>
+</body>
+</html>

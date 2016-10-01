@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% from 'macros.j2' import section, make_table, display_biomes %}
+
+<html>
+{% include 'head.html' %}
+<body>
+<div class="container">
+    <h1>Comparing
+        {% for username in usernames %}
+            {% if not loop.last %}
+                <b>{{ username }}</b> and
+            {% else %}
+                <b>{{ username }}</b>
+            {% endif %}
+        {% endfor %}
+    </h1>
+    {% include 'user_view.html' %}
+</div>
+</body>
+</html>

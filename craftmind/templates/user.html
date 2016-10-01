@@ -1,38 +1,12 @@
 <!DOCTYPE html>
-{% from 'macros.j2' import section %}
+{% from 'macros.j2' import section, make_table, display_biomes %}
 
 <html>
 {% include 'head.html' %}
 <body>
 <div class="container">
-    <h1>{{ username }}</h1>
-    {% for category, data in craft.user_stats(username).items() | sort %}
-        {% call section(category) %}
-        <table class="table table-condensed table-responsive">
-           <tbody>
-            {% for key, val in data.items() | sort %}
-                {% if category|string() == 'achievement' and key|string() == 'exploreAllBiomes' %}
-                <tr>
-                    <td><b>{{ key }}</b></td>
-                    <td>
-                        <ul class="list-unstyled">
-                        {% for item in val.progress | sort %}
-                            <li>{{ item }}</li>
-                        {% endfor %}
-                            <li><b>[value: {{ val.value }}]</b></li>
-                        </ul>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td><b>{{ key }}</b></td>
-                    <td>{{ val }}</td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-        {% endcall %}
-    {% endfor %}
+    {% set username = usernames[0] %}
+    <h1>{{ username }} <a href="/users/{{ username }}/compare">[compare]</a></h1>
+    {% include 'user_view.html' %}
 </div>
 </body>

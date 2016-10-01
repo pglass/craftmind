@@ -1,0 +1,26 @@
+{#
+This is a common view for displaying user data in a table, for single and
+multi-user views.  It requires a `usernames` list containing the users to
+display.
+#}
+
+{% set user_comparison_data = craft.user_comparison(*usernames) %}
+{% for category, data in user_comparison_data.items() | sort %}
+    {% call section(category) %}
+        {% call make_table(headers=[""] + usernames) %}
+            {% for stat_name, user_values in data.items() | sort %}
+            <tr>
+                <td><b>{{ stat_name }}</b></td>
+                {% for name in usernames %}
+                    {% if category|string() == 'achievement' and stat_name|string() == 'exploreAllBiomes' %}
+                        {% call display_biomes(key, user_values[name]) %}{% endcall %}
+                    {% else %}
+                        <td>{{ user_values[name] }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        {% endcall %}
+    {% endcall %}
+{% endfor %}
+
