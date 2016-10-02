@@ -1,15 +1,19 @@
-{% macro section(title) -%}
+{% macro section(title, is_table=False) -%}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">{{ title }}</h3>
         </div>
+        {% if is_table %}
+            {{ caller() }}
+        {% else %}
         <div class="panel-body">
             {{ caller() }}
         </div>
+        {% endif %}
     </div>
 {%- endmacro %}
 
-{% macro make_table(headers=[]) -%}
+{% macro make_table(headers=[], items=[]) -%}
     <table class="table table-condensed table-responsive">
         {% if headers %}
         <thead>
@@ -21,19 +25,21 @@
         </thead>
         {% endif %}
         <tbody>
+            {% for k, v in items | sort %}
+                <tr>
+                    <td><b>{{ k }}</b></td>
+                    <td>{{ v }}</td>
+            {% endfor %}
             {{ caller() }}
         </tbody>
     </table>
 {%- endmacro %}
 
-{% macro display_biomes(key, data) -%}
-    <td>
-        <ul class="list-unstyled">
-        {% for item in data.progress | sort %}
-            <li>{{ item }}</li>
-        {% endfor %}
-            <li><b>[value: {{ data.value }}]</b></li>
-        </ul>
-    </td>
-    {{ caller() }}
+{% macro make_list(data=None) -%}
+    <ul class="list-unstyled">
+    {% for item in (data or []) | sort %}
+        <li>{{ item }}</li>
+    {% endfor %}
+        {{ caller() }}
+    </ul>
 {%- endmacro %}

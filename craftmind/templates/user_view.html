@@ -1,19 +1,73 @@
 {#
 This is a common view for displaying user data in a table, for single and
-multi-user views.  It requires a `usernames` list containing the users to
-display.
+multi-user views. It requires a `usernames` list containing the users to
+display. (This includes the "achievement" and "stat" sections.)
 #}
+
+{% from 'macros.j2' import section, make_table, make_list %}
+
+{% set player_data = craft.player_comparison(*usernames) %}
+{% call section("Player Data", is_table=True) %}
+    {% call make_table(headers=[""] + usernames) %}
+        {% for key, _ in player_data.items() | sort %}
+
+        {# The attributes and inventory are very nested. Extract these to
+           separate sections. #}
+        <tr>
+            <td><b>{{ key }}</b></td>
+            {% for name in usernames %}
+                {% if key|string in ['abilities', 'SelectedItem'] %}
+                    <td style="font-size: small">
+                    {% call make_table(items=player_data[key].get(name, {}).items()) %}
+                    {% endcall %}
+                    </td>
+                {% elif key|string in ['Rotation', 'Pos', 'Motion', 'EnderItems'] %}
+                    <td>
+                    {% call make_list(data=player_data[key].get(name, [])) %}
+                    {% endcall %}
+                    </td>
+                {% elif key|string in ['Inventory'] %}
+                    {% set inventory = player_data[key][name] %}
+                    <td style="font-size: small">
+                    {% call make_table(headers=inventory.headers) %}
+                        {% for entry in inventory.entries %}
+                        <tr>
+                            {% for x in entry %}
+                            <td>{{ x }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    {% endcall %}
+                    </td>
+                {% elif key|string in ['Attributes'] %}
+                    <td style="font-size: small">
+                        {% call make_table(items=player_data[key][name].items()) %}
+                        {% endcall %}
+                    </td>
+                {% else %}
+                    <td>{{ player_data[key].get(name, '') }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+
+        {% endfor %}
+    {% endcall %}
+{% endcall %}
 
 {% set user_comparison_data = craft.user_comparison(*usernames) %}
 {% for category, data in user_comparison_data.items() | sort %}
-    {% call section(category) %}
+    {% call section(category, is_table=True) %}
         {% call make_table(headers=[""] + usernames) %}
             {% for stat_name, user_values in data.items() | sort %}
             <tr>
                 <td><b>{{ stat_name }}</b></td>
                 {% for name in usernames %}
                     {% if category|string() == 'achievement' and stat_name|string() == 'exploreAllBiomes' %}
-                        {% call display_biomes(key, user_values[name]) %}{% endcall %}
+                        <td style="font-size: small">
+                        {% call make_list(user_values[name].progress) %}
+                            <li><b>[value: {{ user_values[name].value }}]</b></li>
+                        {% endcall %}
+                        </td>
                     {% else %}
                         <td>{{ user_values[name] }}</td>
                     {% endif %}
@@ -23,4 +77,3 @@ display.
         {% endcall %}
     {% endcall %}
 {% endfor %}
-

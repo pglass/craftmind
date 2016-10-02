@@ -22,7 +22,7 @@
         </ul>
     {% endcall %}
 
-    {% call section("Server Properties") %}
+    {% call section("Server Properties", is_table=True) %}
         {% call make_table() %}
             {% for key, val in craft.server_properties %}
             <tr>
@@ -33,13 +33,13 @@
         {% endcall %}
     {% endcall %}
 
-    {% call section("Level Data") %}
+    {% call section("Level Data", is_table=True) %}
         {% call make_table() %}
             {% for key, val in craft.level_data.Data.items() | sort %}
             {% if key|string() == 'GameRules' %}
                 <tr>
                     <td><b>{{ key }}</b></td>
-                    <td>
+                    <td style="font-size: small">
                     {% call make_table() %}
                         {% for k, v in val.items() | sort %}
                             <tr>

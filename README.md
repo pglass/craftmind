@@ -9,7 +9,8 @@ Features,
 - [x] List players [`usercache.json`]
 - [x] List server operators [`ops.json`]
 - [x] Show aggregate player statistics [`world/stats/*.json`]
-- [x] Compare player statistics
+- [x] Show current player data [`world/playerdata/*.dat`]
+- [x] Compare players view
 - [x] Display world data [`world/level.dat`]
 - [ ] Show banned ips [`banned-ips.json`]
 - [ ] Show banned players [`banned-players.json`]
